@@ -10,9 +10,6 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- EmailJS -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +27,13 @@
         }
         .sticky-nav {
             position: sticky;
-/* ... existing code ... -->
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .form-input:focus {
             ring: 2px;
@@ -190,52 +193,55 @@
         </footer>
 
         <!-- Product Details Modal -->
-        <div id="product-modal" class="modal-overlay hidden">
-            <div id="modal-content" class="modal-content bg-white w-11/12 md:max-w-4xl rounded-lg shadow-xl relative">
+        <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100] hidden">
+            <div id="modal-content" class="bg-white w-11/12 md:max-w-4xl rounded-lg shadow-xl relative max-h-[90vh] overflow-y-auto">
                 <!-- Content will be injected here -->
             </div>
         </div>
 
         <!-- Interest Form Modal -->
-        <div id="interest-form-modal" class="modal-overlay hidden">
-            <div class="bg-white w-11/12 md:max-w-lg rounded-lg shadow-xl p-8 relative">
-                <button id="close-form-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800">&times;</button>
+        <div id="interest-form-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[110] hidden">
+            <div class="bg-white w-11/12 md:max-w-lg rounded-lg shadow-xl p-6 sm:p-8 relative">
+                <button id="close-form-modal" class="absolute top-3 right-3 text-slate-500 hover:text-slate-800 p-1 rounded-full hover:bg-slate-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
                 <h2 class="text-2xl font-bold mb-2">I'm Interested!</h2>
                 <p class="text-slate-600 mb-6">Please provide your details below. We will contact you shortly.</p>
-                <form id="interest-form">
-                    <input type="hidden" id="product-name-input" name="product_name">
+                <form id="interest-form" action="https://formsubmit.co/udithbabuvarrier10@gmail.com" method="POST">
+                    <!-- FormSubmit Hidden Inputs -->
+                    <input type="hidden" name="_subject" value="New Karuna Product Inquiry!">
+                    <input type="hidden" name="_captcha" value="false"> <!-- You can remove this line to enable captcha -->
+
+                    <input type="hidden" id="product-name-input" name="Product Name">
                     <div class="mb-4">
                         <label for="full_name" class="block text-sm font-medium text-slate-700 mb-1">Full Name *</label>
-                        <input type="text" id="full_name" name="full_name" required class="w-full form-input px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
+                        <input type="text" id="full_name" name="Full Name" required class="w-full form-input px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
                     </div>
                     <div class="mb-4">
                         <label for="mobile_number" class="block text-sm font-medium text-slate-700 mb-1">Mobile Number *</label>
-                        <input type="tel" id="mobile_number" name="mobile_number" required pattern="[0-9\s\-+()]{10,}" title="Please enter a valid phone number" class="w-full form-input px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
+                        <input type="tel" id="mobile_number" name="Mobile Number" required pattern="[0-9\s\-+()]{10,}" title="Please enter a valid phone number" class="w-full form-input px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email (Optional)</label>
-                        <input type="email" id="email" name="email" class="w-full form-input px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
+                        <input type="email" id="email" name="Email" class="w-full form-input px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
                     </div>
                     <div class="mb-6">
                         <label for="notes" class="block text-sm font-medium text-slate-700 mb-1">Notes (Optional)</label>
-                        <textarea id="notes" name="notes" rows="3" class="w-full form-input px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500"></textarea>
+                        <textarea id="notes" name="Notes" rows="3" class="w-full form-input px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500"></textarea>
                     </div>
-                    <button type="submit" id="submit-interest-btn" class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-md hover:bg-teal-700 transition duration-300 flex items-center justify-center">
-                        <span id="submit-text">Submit Inquiry</span>
-                        <svg id="submit-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
+                    <button type="submit" id="submit-interest-btn" class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-md hover:bg-teal-700 transition duration-300">
+                        Submit Inquiry
                     </button>
                 </form>
-                <div id="form-message" class="mt-4 text-sm text-center"></div>
             </div>
         </div>
 
          <!-- Wishlist Modal -->
-        <div id="wishlist-modal" class="modal-overlay hidden">
-            <div class="bg-white w-11/12 md:max-w-2xl rounded-lg shadow-xl p-8 relative">
-                <button id="close-wishlist-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800">&times;</button>
+        <div id="wishlist-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100] hidden">
+            <div class="bg-white w-11/12 md:max-w-2xl rounded-lg shadow-xl p-6 sm:p-8 relative">
+                <button id="close-wishlist-modal" class="absolute top-3 right-3 text-slate-500 hover:text-slate-800 p-1 rounded-full hover:bg-slate-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
                 <h2 class="text-2xl font-bold mb-6">My Wishlist</h2>
                 <div id="wishlist-items-container">
                     <!-- Wishlist items will be injected here -->
@@ -249,12 +255,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // --- CONFIGURATION ---
-            // IMPORTANT: Replace with your EmailJS credentials
-            const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
-            const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-            const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
-            
+            // ===================================================================
             // --- PRODUCT DATA (CMS) ---
             // This acts as a simple CMS. Add or edit products here.
             const products = [
@@ -452,8 +453,10 @@
                  }
 
                 const modalHTML = `
-                    <button id="close-modal" class="absolute top-4 right-4 text-3xl text-slate-500 hover:text-slate-800 z-10">&times;</button>
-                    <div class="grid md:grid-cols-2 gap-8 p-8">
+                    <button id="close-modal" class="absolute top-3 right-3 text-slate-500 hover:text-slate-800 z-10 p-1 rounded-full hover:bg-slate-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                    <div class="grid md:grid-cols-2 gap-8 p-6 sm:p-8">
                         <div>
                            <div class="mb-4 rounded-lg overflow-hidden">
                                 <img id="main-image" src="${product.images[0]}" alt="${product.name}" class="w-full h-auto object-cover rounded-lg">
@@ -600,32 +603,35 @@
                 document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('bg-teal-700', 'text-white'));
             });
 
-            // Open product modal
-            document.body.addEventListener('click', (e) => {
-                const viewBtn = e.target.closest('.view-product-btn');
-                if (viewBtn) {
-                    const productId = parseInt(viewBtn.dataset.id);
-                    openProductModal(productId);
-                }
-            });
-
-            // Close modals
             const closeModals = () => {
                 productModal.classList.add('hidden');
                 interestFormModal.classList.add('hidden');
                 wishlistModal.classList.add('hidden');
             };
 
+            // Unified click handler for the entire body to manage modals
             document.body.addEventListener('click', (e) => {
-                if (e.target.id === 'close-modal' || e.target.id === 'close-form-modal' || e.target.id === 'close-wishlist-modal' || e.target.id === 'product-modal' || e.target.id === 'interest-form-modal' || e.target.id === 'wishlist-modal') {
+                // 1. Handle opening product modal
+                const viewBtn = e.target.closest('.view-product-btn');
+                if (viewBtn) {
+                    const productId = parseInt(viewBtn.dataset.id);
+                    openProductModal(productId);
+                    return; // Stop further checks
+                }
+
+                // 2. Handle closing modals (clicking overlay or a close button)
+                const closeIds = ['close-modal', 'close-form-modal', 'close-wishlist-modal', 'product-modal', 'interest-form-modal', 'wishlist-modal'];
+                if (closeIds.includes(e.target.id)) {
                     closeModals();
+                    return; // Stop further checks
                 }
             });
+
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') closeModals();
             });
 
-            // "I'm interested" button
+            // "I'm interested" button (delegated from modal content)
             modalContent.addEventListener('click', (e) => {
                 if (e.target.id === 'im-interested-btn') {
                     const productName = e.target.dataset.name;
@@ -633,52 +639,6 @@
                     interestFormModal.classList.remove('hidden');
                     productModal.classList.add('hidden');
                 }
-            });
-
-            // Handle interest form submission
-            interestForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const submitBtn = document.getElementById('submit-interest-btn');
-                const submitText = document.getElementById('submit-text');
-                const submitSpinner = document.getElementById('submit-spinner');
-                const formMessage = document.getElementById('form-message');
-
-                submitBtn.disabled = true;
-                submitText.classList.add('hidden');
-                submitSpinner.classList.remove('hidden');
-                formMessage.textContent = '';
-                
-                // Dummy check for EmailJS config
-                if (EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' || EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID') {
-                     setTimeout(() => {
-                        formMessage.textContent = "EmailJS is not configured. Please check console.";
-                        formMessage.className = 'mt-4 text-sm text-center text-red-600';
-                        console.error("EmailJS not configured. Please update EMAILJS_SERVICE_ID and EMAILJS_TEMPLATE_ID in the script.");
-                        submitBtn.disabled = false;
-                        submitText.classList.remove('hidden');
-                        submitSpinner.classList.add('hidden');
-                     }, 1500);
-                     return;
-                }
-
-                emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, e.target, EMAILJS_PUBLIC_KEY)
-                    .then(() => {
-                        formMessage.textContent = "Thank you! Your inquiry has been sent successfully.";
-                        formMessage.className = 'mt-4 text-sm text-center text-green-600';
-                        interestForm.reset();
-                        setTimeout(() => {
-                           interestFormModal.classList.add('hidden');
-                           formMessage.textContent = '';
-                        }, 3000);
-                    }, (error) => {
-                        formMessage.textContent = "Failed to send inquiry. Please try again later.";
-                        formMessage.className = 'mt-4 text-sm text-center text-red-600';
-                        console.error('EmailJS Error:', error);
-                    }).finally(() => {
-                        submitBtn.disabled = false;
-                        submitText.classList.remove('hidden');
-                        submitSpinner.classList.add('hidden');
-                    });
             });
 
             // Wishlist logic
@@ -754,4 +714,5 @@
     </script>
 </body>
 </html>
+
 
