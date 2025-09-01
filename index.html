@@ -46,6 +46,14 @@
             color: #4338ca; /* a suitable indigo color */
         }
         /* -- Advanced UI Enhancements -- */
+        /* Hide scrollbar for category chips on mobile */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
         /* 1. Scroll Animations */
         .card-animate {
             opacity: 0;
@@ -170,8 +178,8 @@
             <!-- Product Categories -->
             <section id="categories" class="mb-12">
                 <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8 text-slate-900">Shop by Category</h2>
-                <div id="category-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Categories will be dynamically inserted here -->
+                <div id="category-container" class="flex overflow-x-auto space-x-3 pb-4 hide-scrollbar md:grid md:grid-cols-4 md:gap-4 md:space-x-0">
+                    <!-- Categories will be dynamically inserted here as chips -->
                 </div>
             </section>
 
@@ -539,12 +547,17 @@
                 const categories = ['All', ...new Set(products.map(p => p.category))];
                 categoryContainer.innerHTML = '';
                 categories.forEach(category => {
-                    const categoryCard = `
-                        <button class="category-btn bg-white p-4 rounded-lg border-2 border-indigo-800 text-indigo-800 hover:bg-indigo-800 hover:text-white transition-all text-center font-semibold" data-category="${category}">
+                    // "All" is active by default on initial load
+                    const baseClasses = "flex-shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-300";
+                    const activeClasses = "bg-indigo-800 text-white";
+                    const inactiveClasses = "bg-slate-100 text-slate-700 hover:bg-slate-200";
+                    
+                    const categoryChip = `
+                        <button class="category-btn ${baseClasses} ${category === 'All' ? activeClasses : inactiveClasses}" data-category="${category}">
                             ${category}
                         </button>
                     `;
-                    categoryContainer.insertAdjacentHTML('beforeend', categoryCard);
+                    categoryContainer.insertAdjacentHTML('beforeend', categoryChip);
                 });
             };
 
@@ -694,8 +707,12 @@
                         productSectionTitle.textContent = category;
                     }
                      // Highlight active category
-                    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('bg-indigo-800', 'text-white'));
+                    document.querySelectorAll('.category-btn').forEach(btn => {
+                        btn.classList.remove('bg-indigo-800', 'text-white');
+                        btn.classList.add('bg-slate-100', 'text-slate-700');
+                    });
                     target.classList.add('bg-indigo-800', 'text-white');
+                    target.classList.remove('bg-slate-100', 'text-slate-700');
                 }
             });
 
@@ -714,13 +731,20 @@
                     const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm));
                     renderProducts(filteredProducts);
                     productSectionTitle.textContent = `Results for "${e.target.value}"`;
-                    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('bg-indigo-800', 'text-white'));
+                    document.querySelectorAll('.category-btn').forEach(btn => {
+                        btn.classList.remove('bg-indigo-800', 'text-white');
+                        btn.classList.add('bg-slate-100', 'text-slate-700');
+                    });
                 } else {
                     renderProducts(products);
                     productSectionTitle.textContent = 'All Products';
-                    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('bg-indigo-800', 'text-white'));
+                    document.querySelectorAll('.category-btn').forEach(btn => {
+                        btn.classList.remove('bg-indigo-800', 'text-white');
+                        btn.classList.add('bg-slate-100', 'text-slate-700');
+                    });
                     if (allCategoryBtn) {
                         allCategoryBtn.classList.add('bg-indigo-800', 'text-white');
+                        allCategoryBtn.classList.remove('bg-slate-100', 'text-slate-700');
                     }
                 }
             };
@@ -919,10 +943,7 @@
                 renderWishlist();
                 renderRecentlyViewed();
                 
-                const allCategoryBtn = document.querySelector('.category-btn[data-category="All"]');
-                if (allCategoryBtn) {
-                    allCategoryBtn.classList.add('bg-indigo-800', 'text-white');
-                }
+                // The 'All' category button is now styled by default in renderCategories
             };
 
             init();
