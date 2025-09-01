@@ -4,8 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karuna | Quality Wardrobes & Almirahs</title>
+    
+    <!-- SEO and PWA Meta Tags -->
     <meta name="description" content="Find the best deals on high-quality wardrobes, almirahs, and storage solutions from Karuna. SEO-friendly and mobile-optimized for the best user experience.">
     <meta name="keywords" content="ecommerce, furniture, wardrobe, almirah, karuna, online shopping">
+    <meta name="theme-color" content="#4338ca">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://karuna-showcase.netlify.app/"> <!-- Replace with your actual URL -->
+    <meta property="og:title" content="Karuna | Quality Wardrobes & Almirahs">
+    <meta property="og:description" content="Discover stylish and durable wardrobes, almirahs, and storage solutions from Karuna, a trusted name since 1982.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1618221443389-9b3b9b473e53?q=80&w=1200&auto=format&fit=crop">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://karuna-showcase.netlify.app/"> <!-- Replace with your actual URL -->
+    <meta property="twitter:title" content="Karuna | Quality Wardrobes & Almirahs">
+    <meta property="twitter:description" content="Discover stylish and durable wardrobes, almirahs, and storage solutions from Karuna, a trusted name since 1982.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1618221443389-9b3b9b473e53?q=80&w=1200&auto=format&fit=crop">
 
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233730a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-14L4 7v10l8 4m0-14L4 7'/%3E%3C/svg%3E" type="image/svg+xml">
@@ -1036,6 +1055,17 @@
             };
 
             init();
+
+            // --- PWA Service Worker Registration ---
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js').then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+                });
+            }
         });
     </script>
 </body>
