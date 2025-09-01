@@ -42,6 +42,9 @@
         body.menu-open {
             overflow: hidden;
         }
+        .bottom-nav-link {
+            position: relative;
+        }
         .bottom-nav-active {
             color: #4338ca; /* a suitable indigo color */
         }
@@ -150,6 +153,11 @@
                     <button id="wishlistBtnDesktop" class="relative hidden lg:inline-flex text-slate-600 hover:text-indigo-700 p-2 rounded-md hover:bg-slate-100">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                         <span id="wishlistCountDesktop" class="absolute -top-1 -right-1 bg-indigo-700 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+
+                    <button id="ordersBtnDesktop" class="relative hidden lg:inline-flex text-slate-600 hover:text-indigo-700 p-2 rounded-md hover:bg-slate-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                        <span id="ordersCountDesktop" class="absolute -top-1 -right-1 bg-indigo-700 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                     </button>
                 </div>
             </nav>
@@ -265,6 +273,7 @@
                         <input type="hidden" name="_captcha" value="false">
 
                         <input type="hidden" id="product-name-input" name="Product Name">
+                        <input type="hidden" id="product-id-input" name="Product ID">
                         <div class="mb-4">
                             <label for="full_name" class="block text-sm font-medium text-slate-700 mb-1">Full Name *</label>
                             <input type="text" id="full_name" name="Full Name" required class="w-full form-input px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
@@ -298,36 +307,56 @@
 
          <!-- Wishlist Modal -->
         <div id="wishlist-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100] hidden">
-            <div class="bg-white w-11/12 md:max-w-2xl rounded-lg shadow-xl p-6 sm:p-8 relative">
+            <div class="bg-white w-11/12 md:max-w-2xl rounded-lg shadow-xl p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
                 <button id="close-wishlist-modal" aria-label="Close wishlist" class="absolute top-3 right-3 text-slate-500 hover:text-slate-800 p-1 rounded-full hover:bg-slate-100">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
                 <h2 class="text-2xl font-bold mb-6">My Wishlist</h2>
-                <div id="wishlist-items-container">
+                <div id="wishlist-items-container" class="space-y-4">
                     <!-- Wishlist items will be injected here -->
                 </div>
             </div>
         </div>
 
-        <!-- ADVANCED BOTTOM NAVIGATION -->
-        <nav id="bottom-nav" class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40">
+        <!-- Orders Modal -->
+        <div id="orders-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100] hidden">
+            <div class="bg-white w-11/12 md:max-w-2xl rounded-lg shadow-xl p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+                <button id="close-orders-modal" aria-label="Close orders" class="absolute top-3 right-3 text-slate-500 hover:text-slate-800 p-1 rounded-full hover:bg-slate-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <h2 class="text-2xl font-bold mb-6">My Inquiries</h2>
+                <div id="orders-items-container" class="space-y-4">
+                    <!-- Order items will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- MODERN & PERFOMANT CURVED BOTTOM NAVIGATION -->
+        <nav id="bottom-nav" class="lg:hidden fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.1)] z-40 border-t border-slate-200/80">
             <div class="flex justify-around h-16">
-                <a href="#hero" data-section="hero" class="bottom-nav-link flex-1 flex flex-col justify-center items-center text-slate-600 hover:bg-indigo-50 transition-colors">
+                <a href="#hero" data-section="hero" class="bottom-nav-link flex-1 flex flex-col justify-center items-center text-slate-600 hover:text-indigo-700 transition-colors">
                     <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                     <span class="text-xs font-medium">Home</span>
                 </a>
-                <a href="#products" data-section="products" class="bottom-nav-link flex-1 flex flex-col justify-center items-center text-slate-600 hover:bg-indigo-50 transition-colors">
+                <a href="#products" data-section="products" class="bottom-nav-link flex-1 flex flex-col justify-center items-center text-slate-600 hover:text-indigo-700 transition-colors">
                     <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                     <span class="text-xs font-medium">Products</span>
                 </a>
-                <button id="wishlistBtnMobile" class="flex-1 flex flex-col justify-center items-center text-slate-600 hover:bg-indigo-50 transition-colors">
+                <button id="ordersBtnMobile" class="flex-1 flex flex-col justify-center items-center text-slate-600 hover:text-indigo-700 transition-colors">
+                     <div class="relative">
+                        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                        <span id="ordersCountMobile" class="absolute -top-1 -right-2 bg-indigo-700 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </div>
+                    <span class="text-xs font-medium">Orders</span>
+                </button>
+                <button id="wishlistBtnMobile" class="flex-1 flex flex-col justify-center items-center text-slate-600 hover:text-indigo-700 transition-colors">
                     <div class="relative">
                         <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                         <span id="wishlistCountMobile" class="absolute -top-1 -right-2 bg-indigo-700 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                     </div>
                     <span class="text-xs font-medium">Wishlist</span>
                 </button>
-                <a href="#contact" data-section="contact" class="bottom-nav-link flex-1 flex flex-col justify-center items-center text-slate-600 hover:bg-indigo-50 transition-colors">
+                <a href="#contact" data-section="contact" class="bottom-nav-link flex-1 flex flex-col justify-center items-center text-slate-600 hover:text-indigo-700 transition-colors">
                     <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     <span class="text-xs font-medium">Contact</span>
                 </a>
@@ -462,6 +491,7 @@
             // --- STATE MANAGEMENT ---
             let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
             let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
             
             // --- DOM ELEMENTS ---
             const productContainer = document.getElementById('product-container');
@@ -476,6 +506,12 @@
             const wishlistCountMobile = document.getElementById('wishlistCountMobile');
             const wishlistModal = document.getElementById('wishlist-modal');
             const wishlistItemsContainer = document.getElementById('wishlist-items-container');
+            const ordersBtnDesktop = document.getElementById('ordersBtnDesktop');
+            const ordersBtnMobile = document.getElementById('ordersBtnMobile');
+            const ordersCountDesktop = document.getElementById('ordersCountDesktop');
+            const ordersCountMobile = document.getElementById('ordersCountMobile');
+            const ordersModal = document.getElementById('orders-modal');
+            const ordersItemsContainer = document.getElementById('orders-items-container');
             const productSectionTitle = document.getElementById('product-section-title');
             const searchInputDesktop = document.getElementById('searchInputDesktop');
             const searchInputMobile = document.getElementById('searchInputMobile');
@@ -517,7 +553,7 @@
                     filteredProducts.forEach(product => {
                         const isWishlisted = wishlist.includes(product.id);
                         const productCard = `
-                            <div class="bg-white rounded-lg border border-slate-200 overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 group card-animate">
+                            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 group card-animate">
                                 <div class="relative zoom-on-hover-container">
                                     <img loading="lazy" src="${product.images[0]}" alt="${product.name}" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/475569?text=Image+Unavailable';">
                                     <button data-id="${product.id}" aria-label="Add to wishlist" class="wishlist-toggle absolute top-3 right-3 p-2 bg-white/80 rounded-full text-slate-600 hover:text-red-500 hover:bg-white transition-colors">
@@ -548,7 +584,7 @@
                 categoryContainer.innerHTML = '';
                 categories.forEach(category => {
                     // "All" is active by default on initial load
-                    const baseClasses = "flex-shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-300";
+                    const baseClasses = "flex-shrink-0 whitespace-nowrap rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors duration-300";
                     const activeClasses = "bg-indigo-800 text-white";
                     const inactiveClasses = "bg-slate-100 text-slate-700 hover:bg-slate-200";
                     
@@ -631,14 +667,14 @@
                 wishlistCountMobile.textContent = count;
                 wishlistItemsContainer.innerHTML = '';
                 if(count === 0){
-                    wishlistItemsContainer.innerHTML = '<p class="text-slate-500 text-center">Your wishlist is empty.</p>';
+                    wishlistItemsContainer.innerHTML = '<p class="text-slate-500 text-center py-8">Your wishlist is empty.</p>';
                     return;
                 }
 
                 const wishlistProducts = products.filter(p => wishlist.includes(p.id));
                 wishlistProducts.forEach(product => {
                     const itemHTML = `
-                        <div class="flex items-center justify-between p-4 border-b">
+                        <div class="flex items-center justify-between p-4 border-b last:border-b-0">
                             <div class="flex items-center">
                                 <img src="${product.images[0]}" alt="${product.name}" class="w-16 h-16 object-cover rounded-md mr-4" onerror="this.onerror=null;this.src='https://placehold.co/200x200/e2e8f0/475569?text=Img';">
                                 <div>
@@ -652,6 +688,34 @@
                         </div>
                     `;
                     wishlistItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+                });
+            };
+
+            const renderOrders = () => {
+                const count = orders.length;
+                ordersCountDesktop.textContent = count;
+                ordersCountMobile.textContent = count;
+                ordersItemsContainer.innerHTML = '';
+                if(count === 0){
+                    ordersItemsContainer.innerHTML = '<p class="text-slate-500 text-center py-8">You haven\'t made any inquiries yet.</p>';
+                    return;
+                }
+
+                orders.forEach(order => {
+                    const product = products.find(p => p.id === order.productId);
+                    if (product) {
+                        const itemHTML = `
+                        <div class="flex items-center bg-white p-4 rounded-lg border border-slate-200 last:border-b-0">
+                            <img src="${product.images[0]}" alt="${product.name}" class="w-16 h-16 object-cover rounded-md mr-4" onerror="this.onerror=null;this.src='https://placehold.co/200x200/e2e8f0/475569?text=Img';">
+                            <div class="flex-grow">
+                                <h4 class="font-semibold text-slate-900">${product.name}</h4>
+                                <p class="text-sm text-slate-500">Inquired on: ${new Date(order.date).toLocaleDateString()}</p>
+                            </div>
+                            <span class="text-lg font-bold text-slate-800">$${product.price}</span>
+                        </div>
+                        `;
+                        ordersItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+                    }
                 });
             };
 
@@ -756,6 +820,7 @@
                 productModal.classList.add('hidden');
                 interestFormModal.classList.add('hidden');
                 wishlistModal.classList.add('hidden');
+                ordersModal.classList.add('hidden');
                 document.body.classList.remove('menu-open');
 
                 // Reset interest form state for next time
@@ -777,8 +842,8 @@
                     return;
                 }
 
-                const closeButton = e.target.closest('#close-modal, #close-form-modal, #close-wishlist-modal');
-                const modalOverlay = e.target.closest('#product-modal, #interest-form-modal, #wishlist-modal');
+                const closeButton = e.target.closest('#close-modal, #close-form-modal, #close-wishlist-modal, #close-orders-modal');
+                const modalOverlay = e.target.closest('#product-modal, #interest-form-modal, #wishlist-modal, #orders-modal');
                 if (closeButton || (modalOverlay && modalOverlay === e.target)) {
                     closeModals();
                     return;
@@ -795,7 +860,9 @@
             modalContent.addEventListener('click', (e) => {
                 if (e.target.id === 'im-interested-btn') {
                     const productName = e.target.dataset.name;
+                    const productId = e.target.dataset.id;
                     document.getElementById('product-name-input').value = productName;
+                    document.getElementById('product-id-input').value = productId;
                     interestFormModal.classList.remove('hidden');
                     productModal.classList.add('hidden');
                 }
@@ -824,6 +891,18 @@
                     if (response.ok) {
                         document.getElementById('form-content-wrapper').classList.add('hidden');
                         document.getElementById('form-submission-success').classList.remove('hidden');
+
+                        // Add to orders
+                        const productId = parseInt(document.getElementById('product-id-input').value);
+                        if (productId) {
+                            const newOrder = {
+                                productId: productId,
+                                date: new Date().toISOString()
+                            };
+                            orders.unshift(newOrder);
+                            localStorage.setItem('orders', JSON.stringify(orders));
+                            renderOrders(); // Update counts and modal content
+                        }
                     } else {
                         response.json().then(data => {
                             alert(data.errors ? data.errors.map(e => e.message).join(", ") : 'An unexpected error occurred.');
@@ -880,6 +959,15 @@
 
             wishlistBtnDesktop.addEventListener('click', openWishlistModal);
             wishlistBtnMobile.addEventListener('click', openWishlistModal);
+
+            const openOrdersModal = () => {
+                renderOrders();
+                ordersModal.classList.remove('hidden');
+                document.body.classList.add('menu-open');
+            };
+
+            ordersBtnDesktop.addEventListener('click', openOrdersModal);
+            ordersBtnMobile.addEventListener('click', openOrdersModal);
             
             const addToRecentlyViewed = (productId) => {
                 recentlyViewed = recentlyViewed.filter(id => id !== productId);
@@ -941,6 +1029,7 @@
                 renderProducts(products);
                 renderCategories();
                 renderWishlist();
+                renderOrders();
                 renderRecentlyViewed();
                 
                 // The 'All' category button is now styled by default in renderCategories
